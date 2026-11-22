@@ -1,7 +1,7 @@
 {
  "team": "Arsenal",
  "season": "2026-2027",
- "generatedAt": "2026-11-19T08:35:49.786Z",
+ "generatedAt": "2026-11-22T01:58:44.558Z",
  "source": "https://ics.fixtur.es/v2/arsenal.ics",
  "count": 52,
  "matches": [
@@ -233,8 +233,8 @@
    "compOrder": 1,
    "home": false,
    "opponent": "Newcastle United",
-   "gf": null,
-   "ga": null
+   "gf": 2,
+   "ga": 2
   },
   {
    "id": "2026-11-24-21",
@@ -381,7 +381,7 @@
   },
   {
    "id": "2027-01-23-34",
-   "utc": "2027-01-23T15:00:00.000Z",
+   "utc": "2027-01-23T17:30:00.000Z",
    "comp": "PL",
    "compName": "英超",
    "compOrder": 1,
@@ -402,8 +402,8 @@
    "ga": null
   },
   {
-   "id": "2027-01-30-36",
-   "utc": "2027-01-30T15:00:00.000Z",
+   "id": "2027-01-31-36",
+   "utc": "2027-01-31T16:30:00.000Z",
    "comp": "PL",
    "compName": "英超",
    "compOrder": 1,
