@@ -1,0 +1,51 @@
+name: 自动更新赛程与前瞻
+
+# 每隔 6 小时拉一次最新比分、赛程、交手记录和预测阵容；
+# 有变化就自动提交，GitHub Pages 跟着重建，手机上的页面自己就刷新了。
+# 也可以在 Actions 页面手动点 "Run workflow" 立刻跑一次。
+
+on:
+  schedule:
+    # UTC；换成北京时间是 03:10 / 09:10 / 15:10 / 21:10
+    - cron: '10 1,7,13,19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: arsenal-update
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 抓赛程并补比分
+        run: node build-fixtures.mjs
+
+      - name: 抓比赛前瞻（交手记录 / 近期战绩 / 预测阵容）
+        run: node build-details.mjs 6
+
+      - name: 版本号自增（让老客户端知道该更新）
+        run: node bump-version.mjs
+
+      - name: 提交改动
+        run: |
+          git config user.name  "arsenal-bot"
+          git config user.email "arsenal-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "没有变化，跳过提交"
+          else
+            git commit -m "chore: 自动更新赛程与前瞻 ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+            git push
+          fi
