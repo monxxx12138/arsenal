@@ -396,7 +396,7 @@ function render() {
   const bday = CFG.birthday || '11-28';
   if (mmdd === bday) {
     $('cake').classList.remove('hidden');
-    $('cakeText').innerHTML = `${CFG.name ? `<b>${CFG.name}</b>，` : ''}今天你 ${CFG.age || 27} 岁了。<br>好好胀饭，万事胜意，生日快乐！`;
+    $('cakeText').innerHTML = `${CFG.name ? `<b>${CFG.name}</b>，` : ''}今天你 ${CFG.age || 27} 岁了。<br>好好胀饭，好好睡觉，生日快乐！`;
   }
 }
 
@@ -543,10 +543,10 @@ function showBirthday() {
       <span class="spark" style="bottom:14%;right:22%;animation-delay:.9s">✚</span>
       <div class="big">🎂</div>
       <h2>${who}，<em>${age} 岁</em>生日快乐</h2>
-      <p class="wish">好好胀饭，万事胜意，生日快乐！</p>
+      <p class="wish">好好胀饭，好好睡觉，生日快乐！</p>
       <p>愿你新的一岁：代码一次跑通，比赛都赢得踏实，喜欢的事都能长久。阿森纳这块牌子，今年也得争点气。</p>
-      <div class="sig">—— 这份日报是专门做给你的</div>
-      <button id="greetOk">谢谢，收下了</button>
+      <div class="sig">—— 我们阿森纳是不可战胜的</div>
+      <button id="greetOk">关注张润谢谢喵</button>
     </div>`
   document.body.appendChild(el)
   el.querySelector('#greetOk').addEventListener('click', () => {
