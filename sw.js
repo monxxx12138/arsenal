@@ -1,6 +1,6 @@
 ﻿/* 鏋墜鏃ユ姤 路 Service Worker
    鐩爣锛氬澹?+ 璧涚▼绂荤嚎鍙敤锛堥鏈轰笂銆佸湴閾侀噷涔熻兘鐪嬭涓婃鐨勬暟鎹級锛?   姣斿垎/绉垎姒滅敱椤甸潰鍐欒繘 localStorage锛屾墍浠ヨ繖閲屽彧璐熻矗闈欐€佽祫婧愩€?*/
-const VERSION = 'arsenal-v5';
+const VERSION = 'arsenal-v6';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './fixtures.json',
   './icon-192.png', './icon-512.png', './icon-180.png',
