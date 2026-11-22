@@ -11,6 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icon-180.png" />
 <link rel="icon" href="icon-192.png" />
+<link rel="icon" sizes="32x32" href="icon-32.png" />
 <style>
   :root{
     --red:#EF0107; --red2:#b3000a; --ink:#0b0d10;
@@ -139,6 +140,12 @@
   .greet h2{font-size:22px;margin:16px 0 6px;font-weight:800;letter-spacing:.3px}
   .greet h2 em{font-style:normal;color:#ff8f92}
   .greet p{font-size:13.5px;color:#c9cfd8;margin:0 0 6px;line-height:1.7}
+  .greet p.wish{
+    font-size:16px;font-weight:750;color:#fff;margin:14px 0 12px;line-height:1.6;
+    padding:12px 10px;border-radius:12px;
+    background:linear-gradient(160deg,rgba(239,1,7,.28),rgba(239,1,7,.06));
+    border:1px solid rgba(239,1,7,.35)
+  }
   .greet .sig{margin-top:14px;font-size:12px;color:var(--dim)}
   .greet button{
     margin-top:22px;padding:12px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
@@ -179,7 +186,7 @@
   </div>
 
   <header>
-    <div class="badge">AFC</div>
+    <img class="badge" src="icon-192.png" alt="AFC" width="40" height="40" />
     <div>
       <h1>枪手日报</h1>
       <div class="sub" id="season">阿森纳 · 加载中…</div>
@@ -227,7 +234,7 @@
   <div id="err" class="err" style="margin-top:10px"></div>
 
   <div class="install-tip hidden" id="installTip">
-    <div class="ico">AFC</div>
+    <div class="ico" style="background:none;overflow:hidden;padding:0"><img src="icon-192.png" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
     <div class="txt">
       <b id="itTitle">把日报装到桌面</b>
       <span id="itDesc">装好后点图标直接打开，不用每次输网址</span>
@@ -389,7 +396,7 @@ function render() {
   const bday = CFG.birthday || '11-28';
   if (mmdd === bday) {
     $('cake').classList.remove('hidden');
-    $('cakeText').innerHTML = `${CFG.name ? `<b>${CFG.name}</b>，` : ''}今天你 ${CFG.age || 27} 岁了。<br>祝你新的一岁事事顺，阿森纳也争气。`;
+    $('cakeText').innerHTML = `${CFG.name ? `<b>${CFG.name}</b>，` : ''}今天你 ${CFG.age || 27} 岁了。<br>好好胀饭，万事胜意，生日快乐！`;
   }
 }
 
@@ -536,8 +543,8 @@ function showBirthday() {
       <span class="spark" style="bottom:14%;right:22%;animation-delay:.9s">✚</span>
       <div class="big">🎂</div>
       <h2>${who}，<em>${age} 岁</em>生日快乐</h2>
-      <p>愿你新的一岁：代码一次跑通，比赛都赢得踏实，喜欢的事都能长久。</p>
-      <p>阿森纳这块牌子，今年也得争点气。</p>
+      <p class="wish">好好胀饭，万事胜意，生日快乐！</p>
+      <p>愿你新的一岁：代码一次跑通，比赛都赢得踏实，喜欢的事都能长久。阿森纳这块牌子，今年也得争点气。</p>
       <div class="sig">—— 这份日报是专门做给你的</div>
       <button id="greetOk">谢谢，收下了</button>
     </div>`
