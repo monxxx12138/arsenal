@@ -1,7 +1,7 @@
-/* 枪手日报 · Service Worker
+﻿/* 枪手日报 · Service Worker
    目标：外壳 + 赛程离线可用（飞机上、地铁里也能看见上次的数据），
    比分/积分榜由页面写进 localStorage，所以这里只负责静态资源。 */
-const VERSION = 'arsenal-v11';
+const VERSION = 'arsenal-v13';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './fixtures.json', './details.json',
   './icon-192.png', './icon-512.png', './icon-180.png', './icon-32.png',
@@ -35,6 +35,20 @@ self.addEventListener('fetch', (e) => {
           return r;
         })
         .catch(() => caches.match('./index.html').then((r) => r || caches.match('./')))
+    );
+    return;
+  }
+
+  // 数据文件走「网络优先」：服务器一更新就能拿到新赛程/前瞻，不用等版本号
+  if (/\.(json)$/i.test(url.pathname)) {
+    e.respondWith(
+      fetch(e.request)
+        .then((r) => {
+          const copy = r.clone();
+          caches.open(VERSION).then((c) => c.put(e.request, copy)).catch(() => {});
+          return r;
+        })
+        .catch(() => caches.match(e.request))
     );
     return;
   }
