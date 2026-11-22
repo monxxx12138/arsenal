@@ -313,7 +313,20 @@ function render() {
     $('matchday').classList.add('hidden');
   }
 
-  const ls = d.last;
+  // 上一场：接口的 eventslast 比「按轮次查」慢一拍，所以本地赛程里有更新的完赛结果时以它为准
+  let ls = d.last;
+  const fLast = (FIXTURES?.matches || [])
+    .filter((m) => m.gf != null)
+    .sort((a, b) => b.utc.localeCompare(a.utc))[0];
+  if (fLast && (!ls || String(ls.dateEvent || '') < fLast.utc.slice(0, 10))) {
+    ls = {
+      strHomeTeam: fLast.home ? 'Arsenal' : fLast.opponent,
+      strAwayTeam: fLast.home ? fLast.opponent : 'Arsenal',
+      intHomeScore: fLast.home ? fLast.gf : fLast.ga,
+      intAwayScore: fLast.home ? fLast.ga : fLast.gf,
+      dateEvent: fLast.utc.slice(0, 10),
+    };
+  }
   if (ls) {
     const ah = isArsenal(ls.strHomeTeam);
     const ours = +(ah ? ls.intHomeScore : ls.intAwayScore);
