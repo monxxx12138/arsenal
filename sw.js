@@ -1,7 +1,6 @@
-/* 枪手日报 · Service Worker
-   目标：外壳 + 赛程离线可用（飞机上、地铁里也能看见上次的数据），
-   比分/积分榜由页面写进 localStorage，所以这里只负责静态资源。 */
-const VERSION = 'arsenal-v3';
+﻿/* 鏋墜鏃ユ姤 路 Service Worker
+   鐩爣锛氬澹?+ 璧涚▼绂荤嚎鍙敤锛堥鏈轰笂銆佸湴閾侀噷涔熻兘鐪嬭涓婃鐨勬暟鎹級锛?   姣斿垎/绉垎姒滅敱椤甸潰鍐欒繘 localStorage锛屾墍浠ヨ繖閲屽彧璐熻矗闈欐€佽祫婧愩€?*/
+const VERSION = 'arsenal-v5';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './fixtures.json',
   './icon-192.png', './icon-512.png', './icon-180.png',
@@ -21,11 +20,11 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // 接口请求不拦：让页面自己处理失败与回退
+  // 鎺ュ彛璇锋眰涓嶆嫤锛氳椤甸潰鑷繁澶勭悊澶辫触涓庡洖閫€
   if (url.hostname !== self.location.hostname) return;
   if (e.request.method !== 'GET') return;
 
-  // 导航请求：先网络（拿最新外壳），失败回缓存
+  // 瀵艰埅璇锋眰锛氬厛缃戠粶锛堟嬁鏈€鏂板澹筹級锛屽け璐ュ洖缂撳瓨
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -39,7 +38,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 静态资源：缓存优先
+  // 闈欐€佽祫婧愶細缂撳瓨浼樺厛
   e.respondWith(
     caches.match(e.request).then((hit) => hit || fetch(e.request).then((r) => {
       const copy = r.clone();
