@@ -146,6 +146,29 @@
   }
   .spark{position:absolute;font-size:18px;animation:float 3s ease-in-out infinite;opacity:.75}
   @keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-12px) rotate(6deg)}}
+
+  /* 安装引导条：Android 用 beforeinstallprompt，iOS 给「分享→添加到主屏幕」提示 */
+  .install-tip{
+    position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 12px);z-index:40;
+    display:flex;align-items:center;gap:10px;padding:12px 12px 12px 14px;border-radius:16px;
+    background:rgba(24,26,32,.96);border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 12px 32px rgba(0,0,0,.5);backdrop-filter:blur(10px);
+    animation:tipIn .35s cubic-bezier(.2,1.2,.4,1)
+  }
+  @keyframes tipIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .install-tip .ico{
+    width:34px;height:34px;border-radius:10px;flex:0 0 auto;display:grid;place-items:center;
+    background:linear-gradient(160deg,var(--red),var(--red2));font-size:11px;font-weight:800;letter-spacing:.5px
+  }
+  .install-tip .txt{flex:1;min-width:0;font-size:12.5px;line-height:1.45;color:#c9cfd8}
+  .install-tip .txt b{display:block;color:#fff;font-size:13.5px;margin-bottom:1px}
+  .install-tip button{
+    flex:0 0 auto;font:inherit;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:10px;border:0;
+    background:var(--red);color:#fff
+  }
+  .install-tip .close{
+    flex:0 0 auto;background:transparent;color:var(--dim);font-size:18px;padding:2px 6px;line-height:1
+  }
 </style>
 </head>
 <body>
@@ -202,6 +225,16 @@
 
   <button class="btn" id="refresh">刷新</button>
   <div id="err" class="err" style="margin-top:10px"></div>
+
+  <div class="install-tip hidden" id="installTip">
+    <div class="ico">AFC</div>
+    <div class="txt">
+      <b id="itTitle">把日报装到桌面</b>
+      <span id="itDesc">装好后点图标直接打开，不用每次输网址</span>
+    </div>
+    <button id="itBtn">安装</button>
+    <button class="close" id="itClose" aria-label="关闭">×</button>
+  </div>
 
   <footer>
     <div id="stamp">—</div>
@@ -514,6 +547,85 @@ function showBirthday() {
     el.remove()
   })
 }
+
+/* ── 安装引导 ────────────────────────────────────────────────────
+   两块逻辑：
+     · Android / 桌面 Chrome：浏览器会给一个 beforeinstallprompt 事件，
+       我们截住它，用自己的按钮触发，这样「安装入口」永远看得见。
+     · iOS Safari：没有这个事件，只能提示「分享 → 添加到主屏幕」
+       （而且必须用 Safari，微信/Chrome 里都没有这一项）。 */
+let deferredInstall = null;
+const isStandalone = () =>
+  matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = () =>
+  /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isWeChat = () => /micromessenger/i.test(navigator.userAgent);
+const isAndroid = () => /android/i.test(navigator.userAgent);
+
+function showInstallTip(mode) {
+  if (isStandalone()) return;
+  if (localStorage.getItem('arsenal:installTipDismissed')) return;
+  const tip = $('installTip');
+  const title = $('itTitle');
+  const desc = $('itDesc');
+  const btn = $('itBtn');
+
+  if (mode === 'android' && deferredInstall) {
+    title.textContent = '把日报装到桌面';
+    desc.textContent = '点右边按钮，桌面会多一个 AFC 图标';
+    btn.textContent = '安装';
+    btn.style.display = '';
+  } else if (mode === 'ios') {
+    title.textContent = '装到桌面更像 App';
+    desc.innerHTML = '点底部 <b style="display:inline;color:#fff">分享 ⤴</b> → 往下翻 → <b style="display:inline;color:#fff">添加到主屏幕</b>';
+    btn.style.display = 'none';
+  } else if (mode === 'wechat') {
+    title.textContent = '微信里装不了';
+    desc.textContent = '点右上角 ··· → 在浏览器打开，再从菜单里添加到主屏幕';
+    btn.style.display = 'none';
+  } else if (mode === 'android-menu') {
+    title.textContent = '装到桌面更像 App';
+    desc.innerHTML = '点浏览器右上角 <b style="display:inline;color:#fff">⋮</b> → <b style="display:inline;color:#fff">安装应用</b>（或「添加到主屏幕」）';
+    btn.style.display = 'none';
+  } else {
+    return;
+  }
+  tip.classList.remove('hidden');
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstall = e;
+  showInstallTip('android');
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstall = null;
+  $('installTip').classList.add('hidden');
+  localStorage.setItem('arsenal:installTipDismissed', 'installed');
+});
+
+$('itBtn').addEventListener('click', async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  const { outcome } = await deferredInstall.userChoice;
+  if (outcome === 'accepted') $('installTip').classList.add('hidden');
+  deferredInstall = null;
+});
+
+$('itClose').addEventListener('click', () => {
+  $('installTip').classList.add('hidden');
+  localStorage.setItem('arsenal:installTipDismissed', '1');
+});
+
+// 没等到 beforeinstallprompt 时按平台给提示（iOS / 微信）
+setTimeout(() => {
+  if (!$('installTip').classList.contains('hidden')) return;
+  if (isWeChat()) showInstallTip('wechat');
+  else if (isIOS()) showInstallTip('ios');
+  else if (isAndroid()) showInstallTip('android-menu');
+}, 2500);
 
 async function boot() {
   const cached = JSON.parse(localStorage.getItem(LS) || 'null');
