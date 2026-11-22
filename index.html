@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
@@ -130,6 +130,35 @@
   .bc.CS{color:#ffb0c8;border-color:rgba(255,120,160,.35)}
   .bc.FR{opacity:.7}
 
+  /* 比赛前瞻 */
+  .pv-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+  .pv-vs{font-size:15px;font-weight:750;line-height:1.3}
+  .pv-comp{font-size:11px;color:var(--dim);white-space:nowrap}
+  .pv-sec + .pv-sec{margin-top:14px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.09)}
+  .pv-title{font-size:10.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-bottom:9px}
+  .h2h{display:grid;gap:7px}
+  .h2h-row{display:grid;grid-template-columns:50px 1fr auto;gap:8px;align-items:center;font-size:12.5px}
+  .h2h-row .d{color:var(--dim);font-size:11px;font-variant-numeric:tabular-nums}
+  .h2h-row .m{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d9dee6}
+  .h2h-row .s{font-variant-numeric:tabular-nums;font-weight:750;font-size:13px}
+  .h2h-row .s.w{color:#5ce0a0}.h2h-row .s.d{color:var(--gold)}.h2h-row .s.l{color:#ff8b8d}
+  .form{display:flex;gap:8px;align-items:center;font-size:12.5px;margin-bottom:7px}
+  .form .who{width:72px;color:#d9dee6;font-weight:600;font-size:12px;flex:0 0 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dots{display:flex;gap:4px}
+  .fd{width:19px;height:19px;border-radius:5px;display:grid;place-items:center;font-size:10px;font-weight:800}
+  .fd.w{background:rgba(46,204,113,.18);color:#5ce0a0}
+  .fd.d{background:rgba(214,178,90,.18);color:var(--gold)}
+  .fd.l{background:rgba(239,1,7,.18);color:#ff8b8d}
+  .pv-x{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px}
+  .pv-x h4{margin:0 0 4px;font-size:12.5px;color:#fff}
+  .pv-x .f{font-size:11px;color:var(--gold);margin-bottom:6px}
+  .pv-x .p{color:#c9cfd8;line-height:1.6;font-size:11.5px}
+  .pv-x .out{color:#ff9a9c;font-size:11px;margin-top:8px;line-height:1.5}
+  .pv-sec summary{cursor:pointer;font-size:10.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;list-style:none}
+  .pv-sec summary::-webkit-details-marker{display:none}
+  .pv-sec summary::after{content:'  展开 ▾';letter-spacing:0;text-transform:none;font-size:11px}
+  .pv-sec details[open] summary::after{content:'  收起 ▴'}
+
   /* 生日 */
   .overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:26px;
     background:rgba(6,7,10,.84);backdrop-filter:blur(12px);animation:fade .3s ease-out}
@@ -200,6 +229,31 @@
     <div class="count" id="count"><span class="num" id="cd">--</span><span class="unit" id="cdUnit">载入中</span></div>
   </div>
 
+  <div class="card hidden" id="previewCard">
+    <div class="pv-head">
+      <div class="pv-vs" id="pvVs"></div>
+      <div class="pv-comp" id="pvComp"></div>
+    </div>
+
+    <div class="pv-sec" id="pvH2hSec">
+      <div class="pv-title">历史交手 · 近 5 次</div>
+      <div class="h2h" id="pvH2h"></div>
+      <div class="stats" id="pvH2hSum" style="margin-top:9px"></div>
+    </div>
+
+    <div class="pv-sec">
+      <div class="pv-title">近期战绩 · 近 5 场</div>
+      <div id="pvForm"></div>
+    </div>
+
+    <div class="pv-sec" id="pvXiSec">
+      <details>
+        <summary>预计首发</summary>
+        <div class="pv-x" id="pvXi" style="margin-top:12px"></div>
+      </details>
+    </div>
+  </div>
+
   <div class="row">
     <div class="card" id="lastCard">
       <div class="label">Last</div>
@@ -258,6 +312,45 @@ const LS = 'arsenal:data:v1';
 const $ = (id) => document.getElementById(id);
 const pad = (n) => String(n).padStart(2, '0');
 const isArsenal = (s) => /arsenal/i.test(s || '');
+
+/* 队名中文映射：TheSportsDB 和 FotMob 两套写法都要覆盖 */
+const TEAM_CN = {
+  'arsenal': '阿森纳',
+  'manchester city': '曼城', 'man city': '曼城',
+  'manchester united': '曼联', 'man united': '曼联',
+  'newcastle united': '纽卡斯尔联', 'newcastle': '纽卡斯尔联',
+  'tottenham hotspur': '热刺', 'tottenham': '热刺', 'spurs': '热刺',
+  'chelsea': '切尔西', 'liverpool': '利物浦',
+  'aston villa': '阿斯顿维拉', 'everton': '埃弗顿',
+  'nottingham forest': '诺丁汉森林', 'crystal palace': '水晶宫',
+  'fulham': '富勒姆',
+  'brentford fc': '布伦特福德', 'brentford': '布伦特福德',
+  'afc bournemouth': '伯恩茅斯', 'bournemouth': '伯恩茅斯',
+  'brighton & hove albion fc': '布莱顿', 'brighton & hove albion': '布莱顿', 'brighton': '布莱顿',
+  'leeds united': '利兹联', 'leeds': '利兹联',
+  'sunderland': '桑德兰',
+  'ipswich town': '伊普斯维奇', 'ipswich': '伊普斯维奇',
+  'hull city': '赫尔城', 'hull': '赫尔城',
+  'coventry city': '考文垂', 'coventry': '考文垂',
+  'fleetwood town fc': '弗利特伍德', 'fleetwood town': '弗利特伍德', 'fleetwood': '弗利特伍德',
+  'borussia dortmund': '多特蒙德', 'dortmund': '多特蒙德',
+  'bayern münchen': '拜仁慕尼黑', 'bayern munich': '拜仁慕尼黑', 'bayern': '拜仁慕尼黑',
+  'real madrid': '皇家马德里', 'napoli': '那不勒斯', 'lille': '里尔',
+  'sk slavia praha': '布拉格斯拉维亚', 'slavia prague': '布拉格斯拉维亚', 'slavia praha': '布拉格斯拉维亚',
+  'sabah': '萨巴赫', 'real betis': '皇家贝蒂斯',
+  'girona fc': '赫罗纳', 'girona': '赫罗纳', 'como': '科莫',
+}
+const zh = (name) => TEAM_CN[String(name || '').trim().toLowerCase()] || name || ''
+
+/* 赛事名中文 */
+const COMP_CN = {
+  'champions league': '欧冠', 'uefa champions league': '欧冠',
+  'premier league': '英超', 'english premier league': '英超',
+  'club friendlies': '友谊赛', 'friendlies': '友谊赛',
+  'fa cup': '足总杯', 'efl cup': '联赛杯', 'carabao cup': '联赛杯',
+  'community shield': '社区盾', 'europa league': '欧联',
+}
+const zhComp = (name) => COMP_CN[String(name || '').trim().toLowerCase()] || name || ''
 // 演示用：?demo=matchday 假装两小时后开球、?demo=live 假装正在进行（只影响显示）
 const DEMO = new URLSearchParams(location.search).get('demo');
 
@@ -340,7 +433,7 @@ function render() {
       : real;
     const diff = kd ? kd - Date.now() : null;
     const soon = diff !== null && diff >= 0 && diff < 24 * 3600e3;
-    $('fixture').innerHTML = `${home}<span class="vs">vs</span>${away}`;
+    $('fixture').innerHTML = `${zh(home)}<span class="vs">vs</span>${zh(away)}`;
     $('meta').innerHTML = `<span class="pill ${soon ? 'hot' : ''}">${isArsenal(home) ? '主场' : '客场'}</span>` +
       `<span>${fmtDate(kd)}</span><span>${nx.strVenue || ''}</span>`;
     $('count').className = 'count' + (soon ? ' soon' : '');
@@ -373,7 +466,7 @@ function render() {
     const theirs = +(ah ? ls.intAwayScore : ls.intHomeScore);
     const cls = ours > theirs ? 'w' : ours === theirs ? 'd' : 'l';
     const txt = ours > theirs ? '胜' : ours === theirs ? '平' : '负';
-    $('lastScore').innerHTML = `${ls.strHomeTeam} ${ours}-${theirs} ${ls.strAwayTeam}<span class="res ${cls}">${txt}</span>`;
+    $('lastScore').innerHTML = `${zh(ls.strHomeTeam)} ${ours}-${theirs} ${zh(ls.strAwayTeam)}<span class="res ${cls}">${txt}</span>`;
     $('lastMeta').textContent = ls.dateEvent || '';
   } else {
     $('lastScore').textContent = '--'; $('lastMeta').textContent = '暂无记录';
@@ -449,7 +542,7 @@ function updateMatchday(kd) {
   if (diff < 3 * 3600e3) when = `还有 ${h ? h + ' 小时 ' : ''}${m} 分钟开球`;
   else if (h < 12) when = `今晚 ${hm} 开球`;
   else when = `明天 ${hm} 开球`;
-  txt.innerHTML = `今日有球 · 阿森纳${where}对 ${opp}<small>${when} · 别忘了</small>`;
+  txt.innerHTML = `今日有球 · 阿森纳${where}对 ${zh(opp)}<small>${when} · 别忘了</small>`;
 }
 
 /* ── 完整赛程 ────────────────────────────────────────────────────
@@ -506,7 +599,7 @@ function renderFixtures() {
     const wd = ['日', '一', '二', '三', '四', '五', '六'][d.getDay()]
     out.push(`<div class="fx${done ? ' done' : ''}${m.id === nextId ? ' next' : ''}">
       <div class="d"><b>${pad(d.getMonth() + 1)}-${pad(d.getDate())}</b>周${wd}</div>
-      <div><div class="opp"><span class="bc ${m.comp}">${m.compName}</span>${m.home ? '主' : '客'} ${m.opponent}</div></div>
+      <div><div class="opp"><span class="bc ${m.comp}">${m.compName}</span>${m.home ? '主' : '客'} ${zh(m.opponent)}</div></div>
       <div>${right}</div>
     </div>`)
   }
@@ -634,6 +727,96 @@ setTimeout(() => {
   else if (isAndroid()) showInstallTip('android-menu');
 }, 2500);
 
+/* ── 比赛前瞻（历史交手 / 近期战绩 / 预计首发）──────────────────────
+   数据来自 details.json（build-details.mjs 从 FotMob 抓的，构建时生成）。
+   这些接口没有 CORS 头，页面里抓不到，只能预先烘好。 */
+let DETAILS = null;
+
+async function loadDetails() {
+  if (window.__DETAILS__) { DETAILS = window.__DETAILS__; return }
+  try {
+    const r = await fetch('details.json', { cache: 'no-cache' });
+    if (r.ok) DETAILS = await r.json();
+  } catch { /* 没有前瞻数据也不影响主卡片 */ }
+}
+
+const fmtD = (iso) => {
+  const d = new Date(iso);
+  const yy = String(d.getFullYear()).slice(2);
+  return `${yy}.${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
+};
+
+function renderPreview() {
+  const card = $('previewCard');
+  if (!DETAILS?.matches?.length) { card.classList.add('hidden'); return }
+
+  // 找到和当前「下一场」对应的那条前瞻（按日期最近的未开球比赛）
+  const now = Date.now();
+  const m = DETAILS.matches
+    .filter((x) => new Date(x.utc).getTime() > now - 2 * 3600e3)
+    .sort((a, b) => new Date(a.utc) - new Date(b.utc))[0]
+  if (!m) { card.classList.add('hidden'); return }
+
+  card.classList.remove('hidden');
+  $('pvVs').innerHTML = `${zh(m.home)} <span style="color:var(--dim);font-weight:500;font-size:12px">vs</span> ${zh(m.away)}`;
+  $('pvComp').textContent = zhComp(m.competition);
+
+  // ① 历史交手
+  const h2hBox = $('pvH2h');
+  const h2hSec = $('pvH2hSec');
+  if (m.h2h?.length) {
+    h2hSec.classList.remove('hidden');
+    let w = 0, d = 0, l = 0;
+    h2hBox.innerHTML = m.h2h.slice(0, 5).map((g) => {
+      const arsenalHome = isArsenal(g.home)
+      const [hs, as] = String(g.score).split('-').map((x) => Number(x.trim()))
+      const ours = arsenalHome ? hs : as
+      const theirs = arsenalHome ? as : hs
+      const cls = ours > theirs ? 'w' : ours === theirs ? 'd' : 'l'
+      if (cls === 'w') w++; else if (cls === 'd') d++; else l++
+      return `<div class="h2h-row">
+        <span class="d">${fmtD(g.utc)}</span>
+        <span class="m">${zh(g.home)} <span style="color:var(--dim)">${g.score}</span> ${zh(g.away)}</span>
+        <span class="s ${cls}">${cls === 'w' ? '胜' : cls === 'd' ? '平' : '负'}</span>
+      </div>`
+    }).join('')
+    $('pvH2hSum').textContent = `近 ${Math.min(5, m.h2h.length)} 次交手：${w} 胜 ${d} 平 ${l} 负`
+  } else {
+    h2hSec.classList.add('hidden')
+  }
+
+  // ② 近期战绩（阿森纳 + 对手）
+  const dots = (arr) => (arr || []).slice(0, 5).reverse().map((f) =>
+    `<span class="fd ${f.result.toLowerCase()}" title="${zh(f.opp)} ${f.gf}-${f.ga}">${f.result}</span>`).join('')
+  const rows = []
+  const af = DETAILS.arsenal?.form || []
+  if (af.length) rows.push(`<div class="form"><span class="who">阿森纳</span><span class="dots">${dots(af)}</span></div>`)
+  const of = m.opponentForm || []
+  if (of.length) rows.push(`<div class="form"><span class="who">${zh(m.opponent)}</span><span class="dots">${dots(of)}</span></div>`)
+  $('pvForm').innerHTML = rows.length ? rows.join('') : '<div class="stats">暂无近期战绩</div>'
+
+  // ③ 预计首发
+  const xi = m.lineup
+  if (xi?.home?.starters?.length || xi?.away?.starters?.length) {
+    $('pvXiSec').classList.remove('hidden')
+    const side = (t, label) => {
+      if (!t?.starters?.length) return `<div><h4>${label}</h4><div class="p">暂未公布</div></div>`
+      const list = t.starters.map((p) => `${p.shirt ? p.shirt + ' ' : ''}${p.name}`).join('<br>')
+      const out = (t.unavailable || []).length
+        ? `<div class="out">缺阵：${t.unavailable.map((u) => u.name).join('、')}</div>` : ''
+      return `<div>
+        <h4>${label}</h4>
+        <div class="f">${t.formation || ''}${t.coach ? ' · ' + t.coach : ''}</div>
+        <div class="p">${list}</div>${out}
+      </div>`
+    }
+    $('pvXi').innerHTML = side(xi.home, zh(xi.home?.name || m.home)) + side(xi.away, zh(xi.away?.name || m.away)) +
+      (xi.type === 'predicted' ? '<div class="out" style="grid-column:1/-1">这是模型预测的阵容，官方首发一般在开赛前 1 小时公布。</div>' : '')
+  } else {
+    $('pvXiSec').classList.add('hidden')
+  }
+}
+
 async function boot() {
   const cached = JSON.parse(localStorage.getItem(LS) || 'null');
   if (cached) { DATA = cached; render(); }
@@ -660,6 +843,7 @@ document.addEventListener('visibilitychange', () => {
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
 loadFixtures().then(() => { render(); renderFixtures(); showBirthday(); });
+loadDetails().then(() => renderPreview());
 </script>
 </body>
 </html>
