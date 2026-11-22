@@ -351,6 +351,48 @@ const COMP_CN = {
   'community shield': '社区盾', 'europa league': '欧联',
 }
 const zhComp = (name) => COMP_CN[String(name || '').trim().toLowerCase()] || name || ''
+
+/* 球场中文名（英超 + 常遇到的欧战客场） */
+const VENUE_CN = {
+  'emirates stadium': '酋长球场',
+  'st james park': '圣詹姆斯公园球场',
+  'etihad stadium': '伊蒂哈德球场',
+  'old trafford': '老特拉福德',
+  'anfield': '安菲尔德',
+  'stamford bridge': '斯坦福桥',
+  'tottenham hotspur stadium': '托特纳姆热刺球场',
+  'villa park': '维拉公园球场',
+  'hill dickinson stadium': '希尔·迪金森球场',
+  'goodison park': '古迪逊公园球场',
+  'craven cottage': '克拉文农场球场',
+  'selhurst park': '塞尔赫斯特公园球场',
+  'the city ground': '城市球场',
+  'city ground': '城市球场',
+  'molineux stadium': '莫利纽克斯球场',
+  'molineux': '莫利纽克斯球场',
+  'vitality stadium': '维塔利蒂球场',
+  'the american express stadium': '美国运通球场',
+  'american express stadium': '美国运通球场',
+  'amex stadium': '美国运通球场',
+  'elland road': '埃兰路球场',
+  'stadium of light': '光明球场',
+  'portman road': '波特曼路球场',
+  'mkm stadium': 'MKM 球场',
+  'coventry building society arena': '考文垂建筑协会球场',
+  'brentford community stadium': '布伦特福德社区球场',
+  'gtéch community stadium': '布伦特福德社区球场',
+  'signal iduna park': '信号伊杜纳公园',
+  'allianz arena': '安联球场',
+  'santiago bernabéu': '伯纳乌球场',
+  'estadio santiago bernabéu': '伯纳乌球场',
+  'stade pierre-mauroy': '皮埃尔·莫鲁瓦球场',
+  'stadio diego armando maradona': '马拉多纳球场',
+  'eden arena': '伊甸球场',
+  'estadi montilivi': '蒙蒂利维球场',
+  'estadio benito villamarín': '贝尼托·比利亚马林球场',
+  'stadio giuseppe sinigaglia': '西尼加利亚球场',
+}
+const zhVenue = (v) => VENUE_CN[String(v || '').trim().toLowerCase()] || v || ''
 // 演示用：?demo=matchday 假装两小时后开球、?demo=live 假装正在进行（只影响显示）
 const DEMO = new URLSearchParams(location.search).get('demo');
 
@@ -435,7 +477,7 @@ function render() {
     const soon = diff !== null && diff >= 0 && diff < 24 * 3600e3;
     $('fixture').innerHTML = `${zh(home)}<span class="vs">vs</span>${zh(away)}`;
     $('meta').innerHTML = `<span class="pill ${soon ? 'hot' : ''}">${isArsenal(home) ? '主场' : '客场'}</span>` +
-      `<span>${fmtDate(kd)}</span><span>${nx.strVenue || ''}</span>`;
+      `<span>${fmtDate(kd)}</span><span>${zhVenue(nx.strVenue)}</span>`;
     $('count').className = 'count' + (soon ? ' soon' : '');
     tick(kd);
     renderMatchday(kd, home, away);
@@ -817,7 +859,7 @@ function renderPreview() {
   }
 }
 
-async function boot() {
+async function boot(silent = false) {
   const cached = JSON.parse(localStorage.getItem(LS) || 'null');
   if (cached) { DATA = cached; render(); }
   try {
@@ -826,7 +868,8 @@ async function boot() {
     $('err').textContent = '';
     render();
   } catch (e) {
-    $('err').textContent = cached ? `刷新失败（${e.message}），显示的是上次数据` : `拉取失败：${e.message}`;
+    // 自动刷新失败时不打扰（只在首次加载且完全没数据时提示）
+    if (!silent) $('err').textContent = cached ? `刷新失败（${e.message}），显示的是上次数据` : `拉取失败：${e.message}`;
   }
 }
 
@@ -837,10 +880,40 @@ $('refresh').addEventListener('click', async () => {
 });
 
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && DATA && Date.now() - DATA.at > 10 * 60000) boot();
+  if (document.visibilityState === 'visible' && DATA && Date.now() - DATA.at > 10 * 60000) boot(true);
 });
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+/* ── 自动更新（三层）─────────────────────────────────────────────
+   ① 比分/积分榜：页面可见时每分钟静默拉一次（失败不打扰）
+   ② 赛程/前瞻 json：Service Worker 里是「网络优先」，服务器一更新就拿到
+   ③ 页面本体（index.html）：Service Worker 发现新版本后自动重载一次 */
+let ticking = false;
+setInterval(() => {
+  if (document.visibilityState !== 'visible') return;
+  if (ticking) return;
+  ticking = true;
+  boot(true).finally(() => { ticking = false; });
+}, 60 * 1000);
+
+if ('serviceWorker' in navigator) {
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloading) return;
+    // 30 秒内只重载一次，避免来回刷
+    const last = Number(sessionStorage.getItem('arsenal:reloadAt') || 0);
+    if (Date.now() - last < 30 * 1000) return;
+    sessionStorage.setItem('arsenal:reloadAt', String(Date.now()));
+    reloading = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register('sw.js')
+    .then((reg) => {
+      reg.update().catch(() => {});
+      // 每小时问一次有没有新版本
+      setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+    })
+    .catch(() => {});
+}
 boot();
 loadFixtures().then(() => { render(); renderFixtures(); showBirthday(); });
 loadDetails().then(() => renderPreview());
