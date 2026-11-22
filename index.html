@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="theme-color" content="#0b0d10" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="枪手日报" />
+<title>枪手日报 · Arsenal</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon-180.png" />
+<link rel="icon" href="icon-192.png" />
+<style>
+  :root{
+    --red:#EF0107; --red2:#b3000a; --ink:#0b0d10;
+    --fg:#f2f4f7; --dim:#8b95a5; --line:rgba(255,255,255,.08);
+    --gold:#d6b25a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    overflow-x:hidden;
+    background:
+      radial-gradient(120% 60% at 50% -10%, rgba(239,1,7,.28), transparent 60%),
+      radial-gradient(80% 40% at 90% 110%, rgba(239,1,7,.12), transparent 60%),
+      var(--ink);
+    color:var(--fg);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 22px);
+    min-height:100%;
+  }
+  .wrap{width:100%;max-width:520px;margin:0 auto}
+  header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .badge{
+    width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(160deg,var(--red),var(--red2));box-shadow:0 6px 18px rgba(239,1,7,.35);
+    font-weight:800;letter-spacing:.5px;font-size:15px
+  }
+  h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.3px}
+  .sub{font-size:12px;color:var(--dim);margin-top:2px}
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:12px;
+    backdrop-filter:blur(8px)
+  }
+  .label{font-size:11px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+  .fixture{font-size:clamp(17px,5.2vw,21px);font-weight:750;line-height:1.25;letter-spacing:.2px;overflow-wrap:anywhere}
+  .fixture .vs{color:var(--dim);font-weight:500;font-size:14px;padding:0 4px}
+  .meta{color:var(--dim);font-size:13px;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 12px}
+  .meta b{color:#d9dee6;font-weight:600}
+  .count{
+    margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.10);
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap
+  }
+  .count .num{font-size:clamp(26px,8.6vw,34px);font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums;
+    background:linear-gradient(180deg,#fff,#ffb4b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .count .unit{color:var(--dim);font-size:13px}
+  .count.soon .num{background:linear-gradient(180deg,#fff,#EF0107);-webkit-background-clip:text;background-clip:text}
+  .pill{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+  .pill.hot{border-color:rgba(239,1,7,.5);color:#ff9a9c;background:rgba(239,1,7,.12)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .row .card{min-width:0;margin-bottom:0}
+  .score{font-size:clamp(15px,4.4vw,22px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1.3;overflow-wrap:anywhere}
+  .res{font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;white-space:nowrap}
+  .res.w{background:rgba(46,204,113,.16);color:#5ce0a0}
+  .res.d{background:rgba(214,178,90,.16);color:var(--gold)}
+  .res.l{background:rgba(239,1,7,.16);color:#ff8b8d}
+  .rank{font-size:30px;font-weight:800;line-height:1}
+  .rank small{font-size:12px;color:var(--dim);font-weight:500;margin-left:4px}
+  .stats{color:var(--dim);font-size:12.5px;margin-top:8px}
+  .stats b{color:#d9dee6}
+  footer{color:var(--dim);font-size:11.5px;text-align:center;margin-top:16px;line-height:1.7}
+  .btn{
+    display:block;width:100%;margin-top:14px;padding:12px;border-radius:14px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--fg);font-size:14px;font-weight:600
+  }
+  .btn:active{background:rgba(255,255,255,.09)}
+  .skeleton{height:14px;border-radius:7px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.12),rgba(255,255,255,.06));
+    background-size:200% 100%;animation:sh 1.2s infinite}
+  @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .err{color:#ff8b8d;font-size:13px}
+  .cake{
+    margin-top:14px;padding:16px;border-radius:18px;text-align:center;
+    background:linear-gradient(160deg,rgba(239,1,7,.22),rgba(214,178,90,.10));
+    border:1px solid rgba(239,1,7,.35)
+  }
+  .cake .t{font-size:15px;font-weight:750;margin-bottom:6px}
+  .cake .d{font-size:12.5px;color:#e8d7d7;line-height:1.6}
+  .hidden{display:none!important}
+  /* 比赛日横幅：只在开球前 24 小时内出现 */
+  .matchday{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;border-radius:16px;
+    background:linear-gradient(100deg,rgba(239,1,7,.9),rgba(179,0,10,.85));
+    box-shadow:0 8px 24px rgba(239,1,7,.28);border:1px solid rgba(255,255,255,.14);
+    animation:rise .35s ease-out
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:0 0 auto;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.65)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+  .matchday .txt{font-size:13.5px;font-weight:650;line-height:1.35}
+  .matchday .txt small{display:block;font-weight:500;font-size:11.5px;opacity:.82;margin-top:2px}
+  .matchday.live{background:linear-gradient(100deg,#c00,#6d0005)}
+
+  /* 完整赛程 */
+  .chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:6px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:0 0 auto;font:inherit;font-size:12px;padding:5px 11px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--dim);white-space:nowrap
+  }
+  .chip.on{background:rgba(239,1,7,.16);border-color:rgba(239,1,7,.5);color:#ffb4b6}
+  .month{font-size:11px;letter-spacing:.14em;color:var(--dim);margin:14px 0 2px;text-transform:uppercase}
+  .fx{display:grid;grid-template-columns:46px 1fr auto;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+  .fx:last-child{border-bottom:0}
+  .fx.done{opacity:.52}
+  .fx.next{background:rgba(239,1,7,.10);border-radius:10px;padding-left:8px;padding-right:8px;margin:4px -8px;border-bottom-color:transparent}
+  .fx .d{color:var(--dim);font-size:11.5px;font-variant-numeric:tabular-nums;line-height:1.35}
+  .fx .d b{display:block;color:#d9dee6;font-size:12.5px;font-weight:650}
+  .fx .opp{font-weight:600;font-size:13.5px;overflow-wrap:anywhere;line-height:1.3}
+  .fx .sub{color:var(--dim);font-size:11px;margin-top:2px}
+  .fx .sc{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;white-space:nowrap}
+  .fx .sc.w{color:#5ce0a0}.fx .sc.d{color:var(--gold)}.fx .sc.l{color:#ff8b8d}
+  .fx .sc.t{color:var(--dim);font-weight:600;font-size:12.5px}
+  .bc{display:inline-block;font-size:9.5px;line-height:1.5;padding:0 4px;border-radius:4px;border:1px solid var(--line);color:var(--dim);margin-right:5px;vertical-align:1px}
+  .bc.PL{color:#c9b6ff;border-color:rgba(160,130,255,.4)}
+  .bc.UCL{color:#8fd0ff;border-color:rgba(70,160,255,.4)}
+  .bc.EFL,.bc.FAC{color:#ffd08a;border-color:rgba(255,170,60,.35)}
+  .bc.CS{color:#ffb0c8;border-color:rgba(255,120,160,.35)}
+  .bc.FR{opacity:.7}
+
+  /* 生日 */
+  .overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:26px;
+    background:rgba(6,7,10,.84);backdrop-filter:blur(12px);animation:fade .3s ease-out}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .greet{max-width:340px;text-align:center}
+  .greet .big{font-size:66px;line-height:1;animation:pop .7s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+  .greet h2{font-size:22px;margin:16px 0 6px;font-weight:800;letter-spacing:.3px}
+  .greet h2 em{font-style:normal;color:#ff8f92}
+  .greet p{font-size:13.5px;color:#c9cfd8;margin:0 0 6px;line-height:1.7}
+  .greet .sig{margin-top:14px;font-size:12px;color:var(--dim)}
+  .greet button{
+    margin-top:22px;padding:12px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+    background:linear-gradient(160deg,var(--red),var(--red2));color:#fff;font:inherit;font-weight:700;font-size:14px
+  }
+  .spark{position:absolute;font-size:18px;animation:float 3s ease-in-out infinite;opacity:.75}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-12px) rotate(6deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="matchday hidden" id="matchday">
+    <span class="dot"></span>
+    <div class="txt" id="matchdayText"></div>
+  </div>
+
+  <header>
+    <div class="badge">AFC</div>
+    <div>
+      <h1>枪手日报</h1>
+      <div class="sub" id="season">阿森纳 · 加载中…</div>
+    </div>
+  </header>
+
+  <div class="card" id="nextCard">
+    <div class="label">Next match</div>
+    <div class="fixture" id="fixture"><div class="skeleton" style="width:70%"></div></div>
+    <div class="meta" id="meta"></div>
+    <div class="count" id="count"><span class="num" id="cd">--</span><span class="unit" id="cdUnit">载入中</span></div>
+  </div>
+
+  <div class="row">
+    <div class="card" id="lastCard">
+      <div class="label">Last</div>
+      <div class="score" id="lastScore">--</div>
+      <div class="stats" id="lastMeta">&nbsp;</div>
+    </div>
+    <div class="card" id="tableCard">
+      <div class="label">Table</div>
+      <div class="rank" id="rank">-<small>位</small></div>
+      <div class="stats" id="tableMeta">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="cake hidden" id="cake">
+    <div class="t">🎂 生日快乐</div>
+    <div class="d" id="cakeText"></div>
+  </div>
+
+  <div class="card" id="fixturesCard">
+    <div class="label" id="fxLabel">Full schedule</div>
+    <div class="chips" id="chips">
+      <button class="chip on" data-f="todo">未踢</button>
+      <button class="chip" data-f="all">全部</button>
+      <button class="chip" data-f="PL">英超</button>
+      <button class="chip" data-f="UCL">欧冠</button>
+      <button class="chip" data-f="cup">杯赛</button>
+    </div>
+    <div id="fixtureList"><div class="skeleton" style="width:80%;margin:8px 0"></div><div class="skeleton" style="width:60%"></div></div>
+  </div>
+
+  <button class="btn" id="refresh">刷新</button>
+  <div id="err" class="err" style="margin-top:10px"></div>
+
+  <footer>
+    <div id="stamp">—</div>
+    <div>数据 TheSportsDB · 非官方 · 仅供个人使用</div>
+  </footer>
+</div>
+
+<script>
+const API = 'https://www.thesportsdb.com/api/v1/json/123';
+const TEAM_ID = '133604', LEAGUE_ID = '4328';
+const CFG = JSON.parse(localStorage.getItem('arsenal:cfg') || '{}');
+const LS = 'arsenal:data:v1';
+
+const $ = (id) => document.getElementById(id);
+const pad = (n) => String(n).padStart(2, '0');
+const isArsenal = (s) => /arsenal/i.test(s || '');
+// 演示用：?demo=matchday 假装两小时后开球、?demo=live 假装正在进行（只影响显示）
+const DEMO = new URLSearchParams(location.search).get('demo');
+
+// 首次访问可用 ?name=xxx&birthday=11-28&age=27 一次性把配置写进本地
+(() => {
+  const q = new URLSearchParams(location.search);
+  const patch = {};
+  for (const k of ['name', 'birthday', 'age']) if (q.has(k)) patch[k] = k === 'age' ? +q.get(k) : q.get(k);
+  if (Object.keys(patch).length) {
+    const merged = { ...CFG, ...patch };
+    localStorage.setItem('arsenal:cfg', JSON.stringify(merged));
+    Object.assign(CFG, merged);
+    history.replaceState(null, '', location.pathname);
+  }
+})();
+
+function seasonNow(d = new Date()) {
+  const m = d.getMonth() + 1, y = d.getFullYear();
+  return m >= 7 ? `${y}-${y + 1}` : `${y - 1}-${y}`;
+}
+const parseUtc = (s) => s ? new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(s) ? s : s.replace(' ', 'T') + 'Z') : null;
+
+function fmtDate(d) {
+  if (!d) return '时间待定';
+  const wd = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+  return `${d.getMonth() + 1}月${d.getDate()}日 ${wd} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+async function get(path) {
+  const r = await fetch(`${API}/${path}`, { cache: 'no-store' });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+async function fetchAll() {
+  const season = seasonNow();
+  const [n, l, t] = await Promise.all([
+    get(`eventsnext.php?id=${TEAM_ID}`).catch(() => null),
+    get(`eventslast.php?id=${TEAM_ID}`).catch(() => null),
+    get(`lookuptable.php?l=${LEAGUE_ID}&s=${season}`).catch(() => null),
+  ]);
+  if (!n && !l && !t) throw new Error('网络不通');
+  return {
+    at: Date.now(), season,
+    next: n?.events?.[0] || null,
+    last: l?.results?.[0] || null,
+    table: (t?.table || []).map(r => ({
+      rank: +r.intRank, team: r.strTeam, played: +r.intPlayed, win: +r.intWin,
+      draw: +r.intDraw, loss: +r.intLoss, gf: +r.intGoalsFor, ga: +r.intGoalsAgainst, pts: +r.intPoints,
+    })),
+  };
+}
+
+let DATA = null, timer = null;
+
+function render() {
+  if (!DATA) return;
+  const d = DATA;
+  $('season').textContent = `阿森纳 · 英超 ${d.season}` + (CFG.name ? ` · ${CFG.name}` : '');
+
+  // 下一场优先用接口的实时数据；接口挂了就从本地赛程里找——赛程是静态的，永远有
+  let nx = d.next;
+  if (!nx && FIXTURES?.matches?.length) {
+    const up = FIXTURES.matches.find((m) => new Date(m.utc).getTime() > Date.now() - 2 * 3600e3);
+    if (up) {
+      nx = {
+        strHomeTeam: up.home ? 'Arsenal' : up.opponent,
+        strAwayTeam: up.home ? up.opponent : 'Arsenal',
+        strTimestamp: up.utc,
+        strVenue: '',
+        strLeague: up.compName,
+      };
+    }
+  }
+  if (nx) {
+    const home = nx.strHomeTeam, away = nx.strAwayTeam;
+    const real = parseUtc(nx.strTimestamp) || parseUtc(`${nx.dateEvent}T${nx.strTime || '00:00:00'}`);
+    const kd = DEMO === 'matchday' ? new Date(Date.now() + 2 * 3600e3)
+      : DEMO === 'live' ? new Date(Date.now() - 1800e3)
+      : real;
+    const diff = kd ? kd - Date.now() : null;
+    const soon = diff !== null && diff >= 0 && diff < 24 * 3600e3;
+    $('fixture').innerHTML = `${home}<span class="vs">vs</span>${away}`;
+    $('meta').innerHTML = `<span class="pill ${soon ? 'hot' : ''}">${isArsenal(home) ? '主场' : '客场'}</span>` +
+      `<span>${fmtDate(kd)}</span><span>${nx.strVenue || ''}</span>`;
+    $('count').className = 'count' + (soon ? ' soon' : '');
+    tick(kd);
+    renderMatchday(kd, home, away);
+  } else {
+    $('fixture').textContent = '暂无赛程';
+    $('meta').textContent = '赛季间隙或数据未更新';
+    $('cd').textContent = '--'; $('cdUnit').textContent = '';
+    $('matchday').classList.add('hidden');
+  }
+
+  const ls = d.last;
+  if (ls) {
+    const ah = isArsenal(ls.strHomeTeam);
+    const ours = +(ah ? ls.intHomeScore : ls.intAwayScore);
+    const theirs = +(ah ? ls.intAwayScore : ls.intHomeScore);
+    const cls = ours > theirs ? 'w' : ours === theirs ? 'd' : 'l';
+    const txt = ours > theirs ? '胜' : ours === theirs ? '平' : '负';
+    $('lastScore').innerHTML = `${ls.strHomeTeam} ${ours}-${theirs} ${ls.strAwayTeam}<span class="res ${cls}">${txt}</span>`;
+    $('lastMeta').textContent = ls.dateEvent || '';
+  } else {
+    $('lastScore').textContent = '--'; $('lastMeta').textContent = '暂无记录';
+  }
+
+  const me = (d.table || []).find(r => isArsenal(r.team));
+  if (me) {
+    const second = d.table.find(r => r.rank === 2);
+    const gap = second ? (me.rank === 1 ? `领先第2名 ${me.pts - second.pts} 分` : `距榜首 ${second.pts - me.pts} 分`) : '';
+    $('rank').innerHTML = `${me.rank}<small>位</small>`;
+    $('tableMeta').innerHTML = `${me.played}场 <b>${me.pts}</b>分 · ${me.win}-${me.draw}-${me.loss}<br>${gap}`;
+  } else {
+    $('rank').innerHTML = `-<small>位</small>`; $('tableMeta').textContent = '暂无数据';
+  }
+
+  $('stamp').textContent = '更新于 ' + new Date(d.at).toLocaleString('zh-CN', { hour12: false });
+
+  const today = new Date();
+  const mmdd = `${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+  const bday = CFG.birthday || '11-28';
+  if (mmdd === bday) {
+    $('cake').classList.remove('hidden');
+    $('cakeText').innerHTML = `${CFG.name ? `<b>${CFG.name}</b>，` : ''}今天你 ${CFG.age || 27} 岁了。<br>祝你新的一岁事事顺，阿森纳也争气。`;
+  }
+}
+
+function tick(kd) {
+  clearInterval(timer);
+  const step = () => {
+    if (!kd) return;
+    const diff = kd - Date.now();
+    if (diff <= 0) { $('cd').textContent = '已开球'; $('cdUnit').textContent = ''; return; }
+    const dd = Math.floor(diff / 86400e3);
+    const h = Math.floor(diff % 86400e3 / 36e5);
+    const m = Math.floor(diff % 36e5 / 6e4);
+    const s = Math.floor(diff % 6e4 / 1000);
+    $('cd').textContent = dd > 0 ? `${dd}天 ${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(h)}:${pad(m)}:${pad(s)}`;
+    $('cdUnit').textContent = dd > 0 ? '' : '小时:分:秒';
+    updateMatchday(kd);
+  };
+  step(); timer = setInterval(step, 1000);
+}
+
+/* ── 比赛日横幅 ────────────────────────────────────────────────
+   规则（全部本地判断，不需要后端）：
+     开球前 24 小时内 → 显示；3 小时内 → 改成「就要开球」；已开球 2 小时内 → 「正在进行」
+   同一天但超过 24 小时（比如后天凌晨的球在今晚看还早）不显示，避免天天挂横幅。 */
+let MATCH_CTX = null;
+function renderMatchday(kd, home, away) {
+  MATCH_CTX = kd ? { kd, home, away } : null;
+  updateMatchday(kd);
+}
+function updateMatchday(kd) {
+  const el = $('matchday'), txt = $('matchdayText');
+  if (!kd || !MATCH_CTX) { el.classList.add('hidden'); return; }
+  const diff = kd - Date.now();
+  const { home, away } = MATCH_CTX;
+  const where = isArsenal(home) ? '主场' : '客场';
+  const opp = isArsenal(home) ? away : home;
+  const hm = `${pad(kd.getHours())}:${pad(kd.getMinutes())}`;
+
+  if (diff <= 0 && diff > -2 * 3600e3) {
+    el.className = 'matchday live';
+    txt.innerHTML = `正在进行 · 阿森纳${where}对 ${opp}<small>比分以直播为准</small>`;
+    return;
+  }
+  if (diff <= 0) { el.classList.add('hidden'); return; }
+  if (diff > 24 * 3600e3) { el.classList.add('hidden'); return; }
+
+  el.className = 'matchday';
+  const h = Math.floor(diff / 36e5), m = Math.floor(diff % 36e5 / 6e4);
+  let when;
+  if (diff < 3 * 3600e3) when = `还有 ${h ? h + ' 小时 ' : ''}${m} 分钟开球`;
+  else if (h < 12) when = `今晚 ${hm} 开球`;
+  else when = `明天 ${hm} 开球`;
+  txt.innerHTML = `今日有球 · 阿森纳${where}对 ${opp}<small>${when} · 别忘了</small>`;
+}
+
+/* ── 完整赛程 ────────────────────────────────────────────────────
+   数据来自 fixtures.json（build-fixtures.mjs 预生成，含联赛/欧冠/杯赛/热身赛）。
+   单文件版会把同一份数据内联成 window.__FIXTURES__，因为 file:// 下 fetch 会被拦。 */
+let FIXTURES = null;
+let compFilter = 'todo';
+const CUP = ['EFL', 'FAC', 'CS'];
+
+async function loadFixtures() {
+  if (window.__FIXTURES__) { FIXTURES = window.__FIXTURES__; return }
+  try {
+    const r = await fetch('fixtures.json', { cache: 'no-cache' });
+    if (r.ok) FIXTURES = await r.json();
+  } catch { /* 没带上就先空着，页面其余部分照常用 */ }
+}
+
+function renderFixtures() {
+  const box = $('fixtureList');
+  if (!FIXTURES?.matches?.length) {
+    box.innerHTML = '<div class="stats">赛程数据没加载上 —— 检查 fixtures.json 是否和 index.html 放在一起</div>';
+    return
+  }
+  const now = Date.now()
+  const started = (m) => new Date(m.utc).getTime() < now - 2 * 3600e3
+  const nextId = (FIXTURES.matches.find((m) => !started(m)) || {}).id
+
+  const matches = FIXTURES.matches.filter((m) => {
+    if (compFilter === 'all') return true
+    if (compFilter === 'cup') return CUP.includes(m.comp)
+    if (compFilter === 'todo') return !started(m) || m.id === nextId
+    return m.comp === compFilter
+  })
+
+  if (!matches.length) { box.innerHTML = '<div class="stats">这个筛选下没有比赛</div>'; return }
+
+  // 标题带上数量，一眼知道还剩几场
+  const left = FIXTURES.matches.filter((m) => !started(m)).length
+  $('fxLabel').textContent = compFilter === 'todo'
+    ? `Full schedule · 还剩 ${left} 场`
+    : `Full schedule · ${matches.length} 场`
+
+  const out = []
+  let month = ''
+  for (const m of matches) {
+    const d = new Date(m.utc)
+    const key = `${d.getFullYear()}-${d.getMonth()}`
+    if (key !== month) { month = key; out.push(`<div class="month">${d.getFullYear()} 年 ${d.getMonth() + 1} 月</div>`) }
+    const done = m.gf != null
+    const cls = done ? (m.gf > m.ga ? 'w' : m.gf === m.ga ? 'd' : 'l') : 't'
+    const right = done
+      ? `<span class="sc ${cls}">${m.gf}-${m.ga}</span>`
+      : `<span class="sc t">${pad(d.getHours())}:${pad(d.getMinutes())}</span>`
+    const wd = ['日', '一', '二', '三', '四', '五', '六'][d.getDay()]
+    out.push(`<div class="fx${done ? ' done' : ''}${m.id === nextId ? ' next' : ''}">
+      <div class="d"><b>${pad(d.getMonth() + 1)}-${pad(d.getDate())}</b>周${wd}</div>
+      <div><div class="opp"><span class="bc ${m.comp}">${m.compName}</span>${m.home ? '主' : '客'} ${m.opponent}</div></div>
+      <div>${right}</div>
+    </div>`)
+  }
+  box.innerHTML = out.join('')
+}
+
+$('chips').addEventListener('click', (ev) => {
+  const b = ev.target.closest('.chip')
+  if (!b) return
+  compFilter = b.dataset.f
+  for (const c of $('chips').children) c.classList.toggle('on', c === b)
+  renderFixtures()
+})
+
+/* ── 生日祝福 ────────────────────────────────────────────────────
+   当天第一次打开时全屏祝福一次（同一天不重复弹），关掉后底部卡片还在。 */
+function showBirthday() {
+  const t = new Date()
+  const mmdd = `${pad(t.getMonth() + 1)}-${pad(t.getDate())}`
+  const bday = CFG.birthday || '11-28'
+  if (mmdd !== bday) return
+  const key = `arsenal:greeted:${t.getFullYear()}${mmdd}`
+  if (localStorage.getItem(key)) return
+
+  const age = Number(CFG.age) || 27
+  const who = CFG.name || '你'
+  const el = document.createElement('div')
+  el.className = 'overlay'
+  el.innerHTML = `
+    <div class="greet">
+      <span class="spark" style="top:12%;left:18%">⚽</span>
+      <span class="spark" style="top:20%;right:16%;animation-delay:.6s">🔴</span>
+      <span class="spark" style="bottom:18%;left:24%;animation-delay:1.2s">🎈</span>
+      <span class="spark" style="bottom:14%;right:22%;animation-delay:.9s">✚</span>
+      <div class="big">🎂</div>
+      <h2>${who}，<em>${age} 岁</em>生日快乐</h2>
+      <p>愿你新的一岁：代码一次跑通，比赛都赢得踏实，喜欢的事都能长久。</p>
+      <p>阿森纳这块牌子，今年也得争点气。</p>
+      <div class="sig">—— 这份日报是专门做给你的</div>
+      <button id="greetOk">谢谢，收下了</button>
+    </div>`
+  document.body.appendChild(el)
+  el.querySelector('#greetOk').addEventListener('click', () => {
+    localStorage.setItem(key, '1')
+    el.remove()
+  })
+}
+
+async function boot() {
+  const cached = JSON.parse(localStorage.getItem(LS) || 'null');
+  if (cached) { DATA = cached; render(); }
+  try {
+    DATA = await fetchAll();
+    localStorage.setItem(LS, JSON.stringify(DATA));
+    $('err').textContent = '';
+    render();
+  } catch (e) {
+    $('err').textContent = cached ? `刷新失败（${e.message}），显示的是上次数据` : `拉取失败：${e.message}`;
+  }
+}
+
+$('refresh').addEventListener('click', async () => {
+  $('refresh').textContent = '刷新中…';
+  await boot();
+  $('refresh').textContent = '刷新';
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && DATA && Date.now() - DATA.at > 10 * 60000) boot();
+});
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+boot();
+loadFixtures().then(() => { render(); renderFixtures(); showBirthday(); });
+</script>
+</body>
+</html>
