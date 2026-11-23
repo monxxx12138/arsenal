@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-23T14:30:18.303Z",
+ "generatedAt": "2026-11-23T20:09:35.827Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -255,8 +255,8 @@
      "coach": "Mikel Arteta",
      "starters": [
       {
-       "name": "David Raya",
-       "shirt": 1
+       "name": "Kepa Arrizabalaga",
+       "shirt": 13
       },
       {
        "name": "Ben White",
@@ -275,12 +275,12 @@
        "shirt": 5
       },
       {
-       "name": "Bruno Guimarães",
-       "shirt": 39
-      },
-      {
        "name": "Declan Rice",
        "shirt": 41
+      },
+      {
+       "name": "Myles Lewis-Skelly",
+       "shirt": 49
       },
       {
        "name": "Noni Madueke",
@@ -291,8 +291,8 @@
        "shirt": 23
       },
       {
-       "name": "Eberechi Eze",
-       "shirt": 10
+       "name": "Christos Tzolis",
+       "shirt": 17
       },
       {
        "name": "Viktor Gyökeres",
@@ -300,6 +300,11 @@
       }
      ],
      "unavailable": [
+      {
+       "name": "David Raya",
+       "type": "injury",
+       "back": "Doubtful"
+      },
       {
        "name": "Martín Zubimendi",
        "type": "injury",
@@ -354,29 +359,29 @@
        "shirt": 7
       },
       {
-       "name": "Fábio Silva",
-       "shirt": 21
+       "name": "Maximilian Beier",
+       "shirt": 14
       },
       {
-       "name": "Serhou Guirassy",
-       "shirt": 9
+       "name": "Fábio Silva",
+       "shirt": 21
       }
      ],
      "unavailable": [
-      {
-       "name": "Samuele Inácio",
-       "type": "injury",
-       "back": "Early January 2027"
-      },
       {
        "name": "Carney Chukwuemeka",
        "type": "injury",
        "back": "Doubtful"
       },
       {
-       "name": "Justin Lerma",
+       "name": "Serhou Guirassy",
        "type": "injury",
-       "back": "About 1-2 weeks"
+       "back": "Doubtful"
+      },
+      {
+       "name": "Emre Can",
+       "type": "injury",
+       "back": "Early January 2027"
       },
       {
        "name": "Giannis Konstantelias",
@@ -384,7 +389,12 @@
        "back": "Late May 2027"
       },
       {
-       "name": "Emre Can",
+       "name": "Justin Lerma",
+       "type": "injury",
+       "back": "About 1-2 weeks"
+      },
+      {
+       "name": "Samuele Inácio",
        "type": "injury",
        "back": "Early January 2027"
       }
