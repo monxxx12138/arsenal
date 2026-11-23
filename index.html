@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
@@ -393,6 +393,57 @@ const VENUE_CN = {
   'stadio giuseppe sinigaglia': '西尼加利亚球场',
 }
 const zhVenue = (v) => VENUE_CN[String(v || '').trim().toLowerCase()] || v || ''
+
+/* 球员/教练中文名（键一律小写；没收录的自动回退英文原名） */
+const PLAYER_CN = {
+  // 阿森纳
+  'david raya': '大卫·拉亚', 'kepa arrizabalaga': '凯帕·阿里萨巴拉加', 'illan meslier': '伊兰·梅斯利耶',
+  'william saliba': '威廉·萨利巴', 'cristhian mosquera': '克里斯蒂安·莫斯克拉', 'ben white': '本·怀特',
+  'piero hincapié': '皮耶罗·因卡皮耶', 'gabriel': '加布里埃尔', 'jurriën timber': '尤里恩·廷伯',
+  'ezri konsa': '埃兹里·孔萨', 'riccardo calafiori': '里卡多·卡拉菲奥里', 'martin ødegaard': '马丁·厄德高',
+  'eberechi eze': '埃贝雷奇·埃泽', 'mikel merino': '米克尔·梅里诺', 'martín zubimendi': '马丁·苏维门迪',
+  'bruno guimarães': '布鲁诺·吉马良斯', 'declan rice': '德克兰·赖斯', 'myles lewis-skelly': '迈尔斯·刘易斯-斯凯利',
+  'max dowman': '马克斯·道曼', 'bukayo saka': '布卡约·萨卡', 'viktor gyökeres': '维克托·约克雷斯',
+  'christos tzolis': '赫里斯托斯·佐利斯', 'noni madueke': '诺尼·马杜埃凯', 'kai havertz': '凯·哈弗茨',
+  'mikel arteta': '米克尔·阿尔特塔',
+  // 多特蒙德
+  'gregor kobel': '格雷戈尔·科贝尔', 'waldemar anton': '瓦尔德马·安东', 'nico schlotterbeck': '尼科·施洛特贝克',
+  'ramy bensebaini': '拉米·本塞拜尼', 'julian ryerson': '尤利安·里尔森', 'joey veerman': '乔伊·维尔曼',
+  'felix nmecha': '费利克斯·恩梅查', 'daniel svensson': '丹尼尔·斯文松', 'jobe bellingham': '乔布·贝林厄姆',
+  'fábio silva': '法比奥·席尔瓦', 'serhou guirassy': '塞尔胡·吉拉西', 'samuele inácio': '萨穆埃莱·伊纳西奥',
+  'carney chukwuemeka': '卡尼·丘库埃梅卡', 'justin lerma': '贾斯汀·莱尔马',
+  'giannis konstantelias': '扬尼斯·康斯坦特利亚斯', 'emre can': '埃姆雷·詹', 'niko kovač': '尼科·科瓦奇',
+  // 曼城
+  'ederson': '埃德森', 'stefan ortega': '斯特凡·奥尔特加', 'rúben dias': '鲁本·迪亚斯', 'ruben dias': '鲁本·迪亚斯',
+  'john stones': '约翰·斯通斯', 'josko gvardiol': '约什科·格瓦迪奥尔', 'nathan aké': '纳坦·阿克',
+  'rico lewis': '里科·刘易斯', 'abdukodir khusanov': '阿卜杜科迪尔·胡萨诺夫', 'rayan aït-nouri': '拉扬·艾特-努里',
+  'rodri': '罗德里', 'bernardo silva': '贝尔纳多·席尔瓦', 'phil foden': '菲尔·福登', 'mateo kovačić': '马特奥·科瓦契奇',
+  'tijjani reijnders': '蒂贾尼·赖因德斯', 'nico gonzález': '尼科·冈萨雷斯', 'jeremy doku': '杰里米·多库',
+  'savinho': '萨维尼奥', 'omar marmoush': '奥马尔·马尔穆什', 'erling haaland': '埃尔林·哈兰德',
+  'pep guardiola': '佩普·瓜迪奥拉',
+  // 皇家马德里
+  'thibaut courtois': '蒂博·库尔图瓦', 'andriy lunin': '安德里·卢宁', 'antonio rüdiger': '安东尼奥·吕迪格',
+  'éder militão': '埃德尔·米利唐', 'dean huijsen': '迪恩·惠森', 'dani carvajal': '达尼·卡瓦哈尔',
+  'trent alexander-arnold': '特伦特·亚历山大-阿诺德', 'fran garcía': '弗兰·加西亚',
+  'federico valverde': '费德里科·巴尔韦德', 'jude bellingham': '裘德·贝林厄姆', 'aurélien tchouaméni': '奥雷利安·楚阿梅尼',
+  'eduardo camavinga': '爱德华多·卡马文加', 'arda güler': '阿尔达·居莱尔', 'vinícius júnior': '维尼修斯',
+  'kylian mbappé': '基利安·姆巴佩', 'rodrygo': '罗德里戈', 'xabi alonso': '哈维·阿隆索',
+  // 热刺
+  'guglielmo vicario': '古列尔莫·维卡里奥', 'cristian romero': '克里斯蒂安·罗梅罗', 'micky van de ven': '米基·范德文',
+  'pedro porro': '佩德罗·波罗', 'destiny udogie': '德斯蒂尼·乌多吉', 'james maddison': '詹姆斯·麦迪逊',
+  'rodrigo bentancur': '罗德里戈·本坦库尔', 'pape matar sarr': '帕佩·马塔尔·萨尔', 'brennan johnson': '布伦南·约翰逊',
+  'dominic solanke': '多米尼克·索兰克', 'richarlison': '里沙利松', 'mohammed kudus': '穆罕默德·库杜斯',
+  'thomas frank': '托马斯·弗兰克',
+  // 布伦特福德
+  'mark flekken': '马克·弗莱肯', 'nathan collins': '内森·柯林斯', 'ethan pinnock': '伊桑·平诺克',
+  'keane lewis-potter': '基恩·刘易斯-波特', 'vitaly janelt': '维塔利·亚内尔特', 'mikkel damsgaard': '米克尔·达姆斯高',
+  'yoane wissa': '约安·维萨', 'igor thiago': '伊戈尔·蒂亚戈', 'keith andrews': '基思·安德鲁斯',
+  // 伯恩茅斯
+  'đorđe petrović': '乔尔杰·彼得罗维奇', 'marcos senesi': '马科斯·塞内西', 'illia zabarnyi': '伊利亚·扎巴尔尼',
+  'antoine semenyo': '安托万·塞梅尼奥', 'justin kluivert': '贾斯汀·克鲁伊维特', 'evanilson': '埃瓦尼尔森',
+  'ryan christie': '瑞安·克里斯蒂', 'andoni iraola': '安东尼·伊拉奥拉',
+}
+const zhPlayer = (n) => PLAYER_CN[String(n || '').trim().toLowerCase()] || n || ''
 // 演示用：?demo=matchday 假装两小时后开球、?demo=live 假装正在进行（只影响显示）
 const DEMO = new URLSearchParams(location.search).get('demo');
 
@@ -843,12 +894,12 @@ function renderPreview() {
     $('pvXiSec').classList.remove('hidden')
     const side = (t, label) => {
       if (!t?.starters?.length) return `<div><h4>${label}</h4><div class="p">暂未公布</div></div>`
-      const list = t.starters.map((p) => `${p.shirt ? p.shirt + ' ' : ''}${p.name}`).join('<br>')
+      const list = t.starters.map((p) => `${p.shirt ? p.shirt + ' ' : ''}${zhPlayer(p.name)}`).join('<br>')
       const out = (t.unavailable || []).length
-        ? `<div class="out">缺阵：${t.unavailable.map((u) => u.name).join('、')}</div>` : ''
+        ? `<div class="out">缺阵：${t.unavailable.map((u) => zhPlayer(u.name)).join('、')}</div>` : ''
       return `<div>
         <h4>${label}</h4>
-        <div class="f">${t.formation || ''}${t.coach ? ' · ' + t.coach : ''}</div>
+        <div class="f">${t.formation || ''}${t.coach ? ' · ' + zhPlayer(t.coach) : ''}</div>
         <div class="p">${list}</div>${out}
       </div>`
     }
