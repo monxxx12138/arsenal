@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-23T20:09:35.827Z",
+ "generatedAt": "2026-11-24T02:22:47.372Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -369,16 +369,6 @@
      ],
      "unavailable": [
       {
-       "name": "Carney Chukwuemeka",
-       "type": "injury",
-       "back": "Doubtful"
-      },
-      {
-       "name": "Serhou Guirassy",
-       "type": "injury",
-       "back": "Doubtful"
-      },
-      {
        "name": "Emre Can",
        "type": "injury",
        "back": "Early January 2027"
@@ -675,6 +665,16 @@
    "lineup": null,
    "opponentForm": [
     {
+     "utc": "2026-11-23T20:00:00.000Z",
+     "comp": "Premier League",
+     "home": "Brentford",
+     "away": "Everton",
+     "opp": "Everton",
+     "gf": 4,
+     "ga": 0,
+     "result": "W"
+    },
+    {
      "utc": "2026-11-08T14:00:00.000Z",
      "comp": "Premier League",
      "home": "Brighton",
@@ -713,16 +713,6 @@
      "gf": 1,
      "ga": 1,
      "result": "D"
-    },
-    {
-     "utc": "2026-10-17T14:00:00.000Z",
-     "comp": "Premier League",
-     "home": "Brentford",
-     "away": "Liverpool",
-     "opp": "Liverpool",
-     "gf": 1,
-     "ga": 2,
-     "result": "L"
     }
    ]
   },
