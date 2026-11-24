@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-24T14:26:33.799Z",
+ "generatedAt": "2026-11-24T20:08:58.089Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -248,7 +248,7 @@
     }
    ],
    "lineup": {
-    "type": "predicted",
+    "type": "standard",
     "home": {
      "name": "Arsenal",
      "formation": "4-2-3-1",
@@ -275,12 +275,12 @@
        "shirt": 5
       },
       {
-       "name": "Declan Rice",
-       "shirt": 41
-      },
-      {
        "name": "Myles Lewis-Skelly",
        "shirt": 49
+      },
+      {
+       "name": "Declan Rice",
+       "shirt": 41
       },
       {
        "name": "Noni Madueke",
@@ -347,20 +347,20 @@
        "shirt": 25
       },
       {
-       "name": "Jobe Bellingham",
-       "shirt": 7
+       "name": "Felix Nmecha",
+       "shirt": 8
       },
       {
        "name": "Daniel Svensson",
        "shirt": 24
       },
       {
-       "name": "Konstantinos Karetsas",
-       "shirt": 19
+       "name": "Jobe Bellingham",
+       "shirt": 7
       },
       {
-       "name": "Felix Nmecha",
-       "shirt": 8
+       "name": "Maximilian Beier",
+       "shirt": 14
       },
       {
        "name": "Fábio Silva",
