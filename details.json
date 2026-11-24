@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-24T08:33:22.454Z",
+ "generatedAt": "2026-11-24T14:26:33.799Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -287,8 +287,8 @@
        "shirt": 20
       },
       {
-       "name": "Mikel Merino",
-       "shirt": 23
+       "name": "Martin Ødegaard",
+       "shirt": 8
       },
       {
        "name": "Christos Tzolis",
@@ -303,7 +303,7 @@
       {
        "name": "David Raya",
        "type": "injury",
-       "back": "Doubtful"
+       "back": "About a week"
       },
       {
        "name": "Martín Zubimendi",
@@ -327,16 +327,16 @@
        "shirt": 1
       },
       {
+       "name": "Joane Gadou",
+       "shirt": 22
+      },
+      {
        "name": "Waldemar Anton",
        "shirt": 3
       },
       {
        "name": "Nico Schlotterbeck",
        "shirt": 4
-      },
-      {
-       "name": "Ramy Bensebaini",
-       "shirt": 5
       },
       {
        "name": "Julian Ryerson",
@@ -347,20 +347,20 @@
        "shirt": 25
       },
       {
-       "name": "Felix Nmecha",
-       "shirt": 8
+       "name": "Jobe Bellingham",
+       "shirt": 7
       },
       {
        "name": "Daniel Svensson",
        "shirt": 24
       },
       {
-       "name": "Jobe Bellingham",
-       "shirt": 7
+       "name": "Konstantinos Karetsas",
+       "shirt": 19
       },
       {
-       "name": "Maximilian Beier",
-       "shirt": 14
+       "name": "Felix Nmecha",
+       "shirt": 8
       },
       {
        "name": "Fábio Silva",
