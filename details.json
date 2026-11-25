@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-24T20:08:58.089Z",
+ "generatedAt": "2026-11-25T02:24:42.667Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -122,6 +122,16 @@
   ],
   "form": [
    {
+    "utc": "2026-11-24T20:00:00.000Z",
+    "comp": "Champions League",
+    "home": "Arsenal",
+    "away": "Dortmund",
+    "opp": "Dortmund",
+    "gf": 1,
+    "ga": 1,
+    "result": "D"
+   },
+   {
     "utc": "2026-11-21T17:30:00.000Z",
     "comp": "Premier League",
     "home": "Newcastle",
@@ -160,290 +170,10 @@
     "gf": 1,
     "ga": 0,
     "result": "W"
-   },
-   {
-    "utc": "2026-10-27T20:00:00.000Z",
-    "comp": "EFL Cup",
-    "home": "Fleetwood",
-    "away": "Arsenal",
-    "opp": "Fleetwood",
-    "gf": 4,
-    "ga": 6,
-    "result": "L"
    }
   ]
  },
  "matches": [
-  {
-   "matchId": 6106259,
-   "utc": "2026-11-24T20:00:00.000Z",
-   "home": "Arsenal",
-   "away": "Dortmund",
-   "competition": "Champions League",
-   "opponentId": 9789,
-   "opponent": "Dortmund",
-   "h2h": [
-    {
-     "utc": "2026-08-09T13:00:00.000Z",
-     "league": "Club Friendlies",
-     "home": "Arsenal",
-     "away": "Borussia Dortmund",
-     "score": "2 - 3",
-     "homeId": "9825",
-     "awayId": "9789"
-    },
-    {
-     "utc": "2014-11-26T19:45:00.000Z",
-     "league": "Champions League",
-     "home": "Arsenal",
-     "away": "Borussia Dortmund",
-     "score": "2 - 0",
-     "homeId": "9825",
-     "awayId": "9789"
-    },
-    {
-     "utc": "2014-09-16T18:45:00.000Z",
-     "league": "Champions League",
-     "home": "Borussia Dortmund",
-     "away": "Arsenal",
-     "score": "2 - 0",
-     "homeId": "9789",
-     "awayId": "9825"
-    },
-    {
-     "utc": "2013-11-06T19:45:00.000Z",
-     "league": "Champions League",
-     "home": "Borussia Dortmund",
-     "away": "Arsenal",
-     "score": "0 - 1",
-     "homeId": "9789",
-     "awayId": "9825"
-    },
-    {
-     "utc": "2013-10-22T18:45:00.000Z",
-     "league": "Champions League",
-     "home": "Arsenal",
-     "away": "Borussia Dortmund",
-     "score": "1 - 2",
-     "homeId": "9825",
-     "awayId": "9789"
-    },
-    {
-     "utc": "2011-11-23T19:45:00.000Z",
-     "league": "Champions League",
-     "home": "Arsenal",
-     "away": "Borussia Dortmund",
-     "score": "2 - 1",
-     "homeId": "9825",
-     "awayId": "9789"
-    },
-    {
-     "utc": "2011-09-13T18:45:00.000Z",
-     "league": "Champions League",
-     "home": "Borussia Dortmund",
-     "away": "Arsenal",
-     "score": "1 - 1",
-     "homeId": "9789",
-     "awayId": "9825"
-    }
-   ],
-   "lineup": {
-    "type": "standard",
-    "home": {
-     "name": "Arsenal",
-     "formation": "4-2-3-1",
-     "coach": "Mikel Arteta",
-     "starters": [
-      {
-       "name": "Kepa Arrizabalaga",
-       "shirt": 13
-      },
-      {
-       "name": "Ben White",
-       "shirt": 4
-      },
-      {
-       "name": "Ezri Konsa",
-       "shirt": 15
-      },
-      {
-       "name": "Gabriel",
-       "shirt": 6
-      },
-      {
-       "name": "Piero Hincapié",
-       "shirt": 5
-      },
-      {
-       "name": "Myles Lewis-Skelly",
-       "shirt": 49
-      },
-      {
-       "name": "Declan Rice",
-       "shirt": 41
-      },
-      {
-       "name": "Noni Madueke",
-       "shirt": 20
-      },
-      {
-       "name": "Martin Ødegaard",
-       "shirt": 8
-      },
-      {
-       "name": "Christos Tzolis",
-       "shirt": 17
-      },
-      {
-       "name": "Viktor Gyökeres",
-       "shirt": 14
-      }
-     ],
-     "unavailable": [
-      {
-       "name": "David Raya",
-       "type": "injury",
-       "back": "About a week"
-      },
-      {
-       "name": "Martín Zubimendi",
-       "type": "injury",
-       "back": "Early December 2026"
-      },
-      {
-       "name": "Bukayo Saka",
-       "type": "injury",
-       "back": "Late December 2026"
-      }
-     ]
-    },
-    "away": {
-     "name": "Borussia Dortmund",
-     "formation": "3-4-2-1",
-     "coach": "Niko Kovač",
-     "starters": [
-      {
-       "name": "Gregor Kobel",
-       "shirt": 1
-      },
-      {
-       "name": "Joane Gadou",
-       "shirt": 22
-      },
-      {
-       "name": "Waldemar Anton",
-       "shirt": 3
-      },
-      {
-       "name": "Nico Schlotterbeck",
-       "shirt": 4
-      },
-      {
-       "name": "Julian Ryerson",
-       "shirt": 26
-      },
-      {
-       "name": "Joey Veerman",
-       "shirt": 25
-      },
-      {
-       "name": "Felix Nmecha",
-       "shirt": 8
-      },
-      {
-       "name": "Daniel Svensson",
-       "shirt": 24
-      },
-      {
-       "name": "Jobe Bellingham",
-       "shirt": 7
-      },
-      {
-       "name": "Maximilian Beier",
-       "shirt": 14
-      },
-      {
-       "name": "Fábio Silva",
-       "shirt": 21
-      }
-     ],
-     "unavailable": [
-      {
-       "name": "Emre Can",
-       "type": "injury",
-       "back": "Early January 2027"
-      },
-      {
-       "name": "Giannis Konstantelias",
-       "type": "injury",
-       "back": "Late May 2027"
-      },
-      {
-       "name": "Justin Lerma",
-       "type": "injury",
-       "back": "About 1-2 weeks"
-      },
-      {
-       "name": "Samuele Inácio",
-       "type": "injury",
-       "back": "Early January 2027"
-      }
-     ]
-    }
-   },
-   "opponentForm": [
-    {
-     "utc": "2026-11-21T14:30:00.000Z",
-     "comp": "Bundesliga",
-     "home": "M'gladbach",
-     "away": "Dortmund",
-     "opp": "M'gladbach",
-     "gf": 1,
-     "ga": 0,
-     "result": "W"
-    },
-    {
-     "utc": "2026-11-07T14:30:00.000Z",
-     "comp": "Bundesliga",
-     "home": "Dortmund",
-     "away": "Elversberg",
-     "opp": "Elversberg",
-     "gf": 2,
-     "ga": 1,
-     "result": "W"
-    },
-    {
-     "utc": "2026-11-04T20:00:00.000Z",
-     "comp": "Champions League",
-     "home": "Dortmund",
-     "away": "Real Betis",
-     "opp": "Real Betis",
-     "gf": 2,
-     "ga": 1,
-     "result": "W"
-    },
-    {
-     "utc": "2026-10-31T17:30:00.000Z",
-     "comp": "Bundesliga",
-     "home": "Bayern München",
-     "away": "Dortmund",
-     "opp": "Bayern München",
-     "gf": 2,
-     "ga": 2,
-     "result": "D"
-    },
-    {
-     "utc": "2026-10-27T19:45:00.000Z",
-     "comp": "DFB Pokal",
-     "home": "Dortmund",
-     "away": "Werder Bremen",
-     "opp": "Werder Bremen",
-     "gf": 3,
-     "ga": 2,
-     "result": "W"
-    }
-   ]
-  },
   {
    "matchId": 5795525,
    "utc": "2026-11-29T16:30:00.000Z",
@@ -529,6 +259,16 @@
    "lineup": null,
    "opponentForm": [
     {
+     "utc": "2026-11-24T20:00:00.000Z",
+     "comp": "Champions League",
+     "home": "Man City",
+     "away": "Napoli",
+     "opp": "Napoli",
+     "gf": 2,
+     "ga": 2,
+     "result": "D"
+    },
+    {
      "utc": "2026-11-21T12:30:00.000Z",
      "comp": "Premier League",
      "home": "Man City",
@@ -567,16 +307,6 @@
      "gf": 0,
      "ga": 1,
      "result": "L"
-    },
-    {
-     "utc": "2026-10-28T19:30:00.000Z",
-     "comp": "EFL Cup",
-     "home": "Man City",
-     "away": "Brighton",
-     "opp": "Brighton",
-     "gf": 6,
-     "ga": 5,
-     "result": "W"
     }
    ]
   },
@@ -892,6 +622,16 @@
    "lineup": null,
    "opponentForm": [
     {
+     "utc": "2026-11-24T20:00:00.000Z",
+     "comp": "Champions League",
+     "home": "Real Madrid",
+     "away": "PSV Eindhoven",
+     "opp": "PSV Eindhoven",
+     "gf": 5,
+     "ga": 1,
+     "result": "W"
+    },
+    {
      "utc": "2026-11-21T20:00:00.000Z",
      "comp": "LaLiga",
      "home": "Real Madrid",
@@ -929,16 +669,6 @@
      "opp": "Racing Santander",
      "gf": 3,
      "ga": 0,
-     "result": "W"
-    },
-    {
-     "utc": "2026-10-25T20:00:00.000Z",
-     "comp": "LaLiga",
-     "home": "Barcelona",
-     "away": "Real Madrid",
-     "opp": "Barcelona",
-     "gf": 2,
-     "ga": 1,
      "result": "W"
     }
    ]
@@ -1076,6 +806,142 @@
      "gf": 3,
      "ga": 0,
      "result": "W"
+    }
+   ]
+  },
+  {
+   "matchId": 5795566,
+   "utc": "2026-12-20T16:30:00.000Z",
+   "home": "Arsenal",
+   "away": "Man United",
+   "competition": "Premier League",
+   "opponentId": 10260,
+   "opponent": "Man United",
+   "h2h": [
+    {
+     "utc": "2026-01-25T16:30:00.000Z",
+     "league": "Premier League",
+     "home": "Arsenal",
+     "away": "Manchester United",
+     "score": "2 - 3",
+     "homeId": "9825",
+     "awayId": "10260"
+    },
+    {
+     "utc": "2025-08-17T15:30:00.000Z",
+     "league": "Premier League",
+     "home": "Manchester United",
+     "away": "Arsenal",
+     "score": "0 - 1",
+     "homeId": "10260",
+     "awayId": "9825"
+    },
+    {
+     "utc": "2025-03-09T16:30:00.000Z",
+     "league": "Premier League",
+     "home": "Manchester United",
+     "away": "Arsenal",
+     "score": "1 - 1",
+     "homeId": "10260",
+     "awayId": "9825"
+    },
+    {
+     "utc": "2025-01-12T15:00:00.000Z",
+     "league": "FA Cup",
+     "home": "Arsenal",
+     "away": "Manchester United",
+     "score": "1 - 1",
+     "homeId": "9825",
+     "awayId": "10260"
+    },
+    {
+     "utc": "2024-12-04T20:15:00.000Z",
+     "league": "Premier League",
+     "home": "Arsenal",
+     "away": "Manchester United",
+     "score": "2 - 0",
+     "homeId": "9825",
+     "awayId": "10260"
+    },
+    {
+     "utc": "2024-07-28T00:00:00.000Z",
+     "league": "Club Friendlies",
+     "home": "Arsenal",
+     "away": "Manchester United",
+     "score": "2 - 1",
+     "homeId": "9825",
+     "awayId": "10260"
+    },
+    {
+     "utc": "2024-05-12T15:30:00.000Z",
+     "league": "Premier League",
+     "home": "Manchester United",
+     "away": "Arsenal",
+     "score": "0 - 1",
+     "homeId": "10260",
+     "awayId": "9825"
+    },
+    {
+     "utc": "2023-09-03T15:30:00.000Z",
+     "league": "Premier League",
+     "home": "Arsenal",
+     "away": "Manchester United",
+     "score": "3 - 1",
+     "homeId": "9825",
+     "awayId": "10260"
+    }
+   ],
+   "lineup": null,
+   "opponentForm": [
+    {
+     "utc": "2026-11-22T16:30:00.000Z",
+     "comp": "Premier League",
+     "home": "Liverpool",
+     "away": "Man United",
+     "opp": "Liverpool",
+     "gf": 0,
+     "ga": 4,
+     "result": "L"
+    },
+    {
+     "utc": "2026-11-08T16:30:00.000Z",
+     "comp": "Premier League",
+     "home": "Man United",
+     "away": "Aston Villa",
+     "opp": "Aston Villa",
+     "gf": 4,
+     "ga": 4,
+     "result": "D"
+    },
+    {
+     "utc": "2026-11-03T20:00:00.000Z",
+     "comp": "Champions League",
+     "home": "Man United",
+     "away": "Roma",
+     "opp": "Roma",
+     "gf": 3,
+     "ga": 2,
+     "result": "W"
+    },
+    {
+     "utc": "2026-10-31T12:30:00.000Z",
+     "comp": "Premier League",
+     "home": "Chelsea",
+     "away": "Man United",
+     "opp": "Chelsea",
+     "gf": 0,
+     "ga": 2,
+     "result": "L"
+    },
+    {
+     "utc": "2026-10-25T14:00:00.000Z",
+     "comp": "Premier League",
+     "home": "Man United",
+     "away": "Bournemouth",
+     "opp": "Bournemouth",
+     "gf": 0,
+     "ga": 3,
+     "result": "L"
     }
    ]
   }
