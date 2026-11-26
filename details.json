@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-26T14:26:54.841Z",
+ "generatedAt": "2026-11-26T20:12:22.048Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -257,7 +257,7 @@
     }
    ],
    "lineup": {
-    "type": "lastStarting11",
+    "type": "predicted",
     "home": {
      "name": "Arsenal",
      "formation": "4-2-3-1",
@@ -268,8 +268,8 @@
        "shirt": 13
       },
       {
-       "name": "Ben White",
-       "shirt": 4
+       "name": "Jurriën Timber",
+       "shirt": 12
       },
       {
        "name": "Ezri Konsa",
@@ -280,16 +280,16 @@
        "shirt": 6
       },
       {
-       "name": "Piero Hincapié",
-       "shirt": 5
+       "name": "Riccardo Calafiori",
+       "shirt": 33
       },
       {
        "name": "Declan Rice",
        "shirt": 41
       },
       {
-       "name": "Myles Lewis-Skelly",
-       "shirt": 49
+       "name": "Bruno Guimarães",
+       "shirt": 39
       },
       {
        "name": "Noni Madueke",
@@ -300,12 +300,12 @@
        "shirt": 8
       },
       {
-       "name": "Christos Tzolis",
-       "shirt": 17
+       "name": "Eberechi Eze",
+       "shirt": 10
       },
       {
-       "name": "Viktor Gyökeres",
-       "shirt": 14
+       "name": "Kai Havertz",
+       "shirt": 29
       }
      ],
      "unavailable": [
@@ -336,16 +336,16 @@
        "shirt": 1
       },
       {
-       "name": "Matheus Nunes",
-       "shirt": 27
+       "name": "Abdukodir Khusanov",
+       "shirt": 45
+      },
+      {
+       "name": "Rúben Dias",
+       "shirt": 3
       },
       {
        "name": "Marc Guéhi",
        "shirt": 6
-      },
-      {
-       "name": "Joško Gvardiol",
-       "shirt": 24
       },
       {
        "name": "Nico O'Reilly",
@@ -360,16 +360,16 @@
        "shirt": 32
       },
       {
-       "name": "Rayan Cherki",
-       "shirt": 10
+       "name": "Iliman Ndiaye",
+       "shirt": 7
       },
       {
-       "name": "Enzo Fernández",
-       "shirt": 17
+       "name": "Phil Foden",
+       "shirt": 47
       },
       {
-       "name": "Allan",
-       "shirt": 37
+       "name": "Jérémy Doku",
+       "shirt": 11
       },
       {
        "name": "Erling Haaland",
@@ -886,6 +886,16 @@
    "lineup": null,
    "opponentForm": [
     {
+     "utc": "2026-11-26T17:45:00.000Z",
+     "comp": "Europa League",
+     "home": "Celta Vigo",
+     "away": "Bournemouth",
+     "opp": "Celta Vigo",
+     "gf": 2,
+     "ga": 1,
+     "result": "W"
+    },
+    {
      "utc": "2026-11-21T15:00:00.000Z",
      "comp": "Premier League",
      "home": "Bournemouth",
@@ -922,16 +932,6 @@
      "away": "Leeds",
      "opp": "Leeds",
      "gf": 2,
-     "ga": 0,
-     "result": "W"
-    },
-    {
-     "utc": "2026-10-28T19:45:00.000Z",
-     "comp": "EFL Cup",
-     "home": "Bournemouth",
-     "away": "Aston Villa",
-     "opp": "Aston Villa",
-     "gf": 3,
      "ga": 0,
      "result": "W"
     }
