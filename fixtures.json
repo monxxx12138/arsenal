@@ -1,7 +1,7 @@
 {
  "team": "Arsenal",
  "season": "2026-2027",
- "generatedAt": "2026-11-26T02:23:07.140Z",
+ "generatedAt": "2026-11-26T08:35:05.555Z",
  "source": "https://ics.fixtur.es/v2/arsenal.ics",
  "count": 52,
  "matches": [
@@ -244,8 +244,8 @@
    "compOrder": 2,
    "home": true,
    "opponent": "Borussia Dortmund",
-   "gf": null,
-   "ga": null
+   "gf": 1,
+   "ga": 1
   },
   {
    "id": "2026-11-29-22",
