@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-25T20:02:15.741Z",
+ "generatedAt": "2026-11-26T02:23:17.321Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -1022,6 +1022,16 @@
    "lineup": null,
    "opponentForm": [
     {
+     "utc": "2026-11-25T20:00:00.000Z",
+     "comp": "Champions League",
+     "home": "Sporting CP",
+     "away": "Man United",
+     "opp": "Sporting CP",
+     "gf": 2,
+     "ga": 2,
+     "result": "D"
+    },
+    {
      "utc": "2026-11-22T16:30:00.000Z",
      "comp": "Premier League",
      "home": "Liverpool",
@@ -1059,16 +1069,6 @@
      "opp": "Chelsea",
      "gf": 0,
      "ga": 2,
-     "result": "L"
-    },
-    {
-     "utc": "2026-10-25T14:00:00.000Z",
-     "comp": "Premier League",
-     "home": "Man United",
-     "away": "Bournemouth",
-     "opp": "Bournemouth",
-     "gf": 0,
-     "ga": 3,
      "result": "L"
     }
    ]
