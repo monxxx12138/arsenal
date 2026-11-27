@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-27T14:25:19.887Z",
+ "generatedAt": "2026-11-27T20:05:20.706Z",
  "source": "fotmob",
  "arsenal": {
   "squad": [
@@ -87,10 +87,6 @@
      {
       "name": "Myles Lewis-Skelly",
       "pos": "Midfielder"
-     },
-     {
-      "name": "Max Dowman",
-      "pos": "Midfielder"
      }
     ]
    },
@@ -115,6 +111,10 @@
      },
      {
       "name": "Kai Havertz",
+      "pos": "Attacker"
+     },
+     {
+      "name": "Max Dowman",
       "pos": "Attacker"
      }
     ]
@@ -322,7 +322,7 @@
       {
        "name": "Bukayo Saka",
        "type": "injury",
-       "back": "Late December 2026"
+       "back": "Back in training"
       }
      ]
     },
@@ -380,7 +380,7 @@
       {
        "name": "Antoine Semenyo",
        "type": "injury",
-       "back": "Mid December 2026"
+       "back": "Early December 2026"
       }
      ]
     }
